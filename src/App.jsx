@@ -3,7 +3,6 @@ import {
   AreaChart, Area, BarChart, Bar,
   XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid
 } from "recharts";
-import React from 'react';
 import { FaTents } from "react-icons/fa6";
 
 /* ═══════════════════════════════════════════════════════════════════
