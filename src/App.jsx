@@ -151,6 +151,125 @@ const StatCard = ({ label, value, icon, color, onClick }) => (
   </Card>
 );
 
+  /* ════════════════════════════════════════════════════════════════
+     COMPONENTS
+  ════════════════════════════════════════════════════════════════ */
+
+  /* ─── TOAST ─────────────────────────────────────────────────── */
+  const Toast = () => !toast ? null : (
+    <div style={{ position:"fixed", bottom:24, right:24, zIndex:9999,
+      background: toast.type==="error" ? C.red : toast.type==="success" ? C.greenDark : C.blue,
+      color:"#fff", padding:"12px 20px", borderRadius:12, maxWidth:320,
+      boxShadow:"0 8px 32px rgba(0,0,0,0.6)", fontWeight:600, fontSize:14,
+      animation:"toastIn 0.3s ease" }}>
+      {toast.msg}
+    </div>
+  );
+
+  /* ─── NAVBAR ─────────────────────────────────────────────────── */
+  const NavBar = () => {
+    const adminNav = [
+      { k:"admin_dashboard",      label:"Dashboard" },
+      { k:"admin_items",          label:"Barang" },
+      { k:"admin_verifications",  label: pending.length > 0 ? `Verifikasi (${pending.length})` : "Verifikasi" },
+      { k:"admin_history",        label:"Histori" },
+    ];
+    const custNav = [
+      { k:"customer_catalog",   label:"Katalog" },
+      { k:"customer_bookings",  label:"Booking Saya" },
+      { k:"customer_profile",   label:"Profil" },
+    ];
+    const navItems = user?.role === "admin" ? adminNav : custNav;
+
+    const NavLink = ({ k, label }) => (
+      <button onClick={() => navigate(k)} style={{
+        background: page===k ? C.accentDim : "transparent",
+        color: page===k ? C.accent : C.muted,
+        border:"none", borderRadius:8, padding:"6px 13px",
+        cursor:"pointer", fontWeight:700, fontSize:13, fontFamily:"inherit",
+        transition:"all 0.15s", whiteSpace:"nowrap",
+        borderBottom: page===k ? `2px solid ${C.accent}` : "2px solid transparent",
+      }}>{label}</button>
+    );
+
+    return (
+      <nav style={{ position:"sticky", top:0, zIndex:200, background:"rgba(7,14,8,0.97)",
+        backdropFilter:"blur(12px)", borderBottom:`1px solid ${C.border}`,
+        padding:"0 20px", display:"flex", alignItems:"center",
+        justifyContent:"space-between", height:58 }}>
+        {/* Logo */}
+        <div style={{ display:"flex", alignItems:"center", gap:20 }}>
+          <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontWeight:900, fontSize:22,
+            color:C.accent, letterSpacing:1, whiteSpace:"nowrap", display:"flex", alignItems:"center", gap:6 }}>
+            <span style={{ fontSize:18 }}>⛰</span> BASECAMP
+          </div>
+          {/* Desktop nav */}
+          <div style={{ display:"flex", gap:2, "@media(max-width:640px)":{display:"none"} }} className="desk-nav">
+            {navItems.map(n => <NavLink key={n.k} {...n} />)}
+          </div>
+        </div>
+
+        {/* Right side */}
+        <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+          {/* Notif bell */}
+          <div style={{ position:"relative" }}>
+            <button onClick={() => setShowNotif(s => !s)} style={{
+              background:"transparent", border:"none", cursor:"pointer",
+              fontSize:18, position:"relative", padding:"4px 6px", color:C.muted }}>
+              🔔
+              {unread > 0 && <span style={{ position:"absolute", top:-1, right:-1,
+                background:C.red, color:"#fff", borderRadius:"50%",
+                width:15, height:15, fontSize:9, fontWeight:800,
+                display:"flex", alignItems:"center", justifyContent:"center" }}>{unread}</span>}
+            </button>
+            {showNotif && (
+              <div style={{ position:"absolute", right:0, top:42, background:C.bg2,
+                border:`1px solid ${C.border}`, borderRadius:14, width:290,
+                boxShadow:"0 20px 60px rgba(0,0,0,0.7)", zIndex:300, overflow:"hidden" }}>
+                <div style={{ padding:"12px 16px", fontWeight:700, fontSize:13,
+                  borderBottom:`1px solid ${C.border}`, color:C.white }}>
+                  🔔 Notifikasi
+                </div>
+                {notifs.slice(0,6).map(n => (
+                  <div key={n.id} onClick={() => {
+                    setNotifs(prev => prev.map(x => x.id===n.id ? {...x, read:true} : x));
+                    setShowNotif(false);
+                  }} style={{ padding:"10px 16px", cursor:"pointer",
+                    background: n.read ? "transparent" : "rgba(240,160,48,0.07)",
+                    fontSize:13, color: n.read ? C.muted : C.text,
+                    borderBottom:`1px solid ${C.border}40`, transition:"background 0.15s" }}>
+                    <span style={{ marginRight:6 }}>
+                      {n.type==="danger"?"🔴":n.type==="success"?"🟢":n.type==="warn"?"🟡":"🔵"}
+                    </span>{n.text}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* User info */}
+          <div style={{ fontSize:12, color:C.muted, display:"flex", alignItems:"center", gap:6 }}>
+            <span style={{ color:C.text, fontWeight:700, display:"none" }} className="user-name">{user?.name}</span>
+            <span style={{ background: user?.role==="admin" ? C.accentDim : "rgba(59,158,221,0.15)",
+              color: user?.role==="admin" ? C.accent : C.blue,
+              padding:"2px 8px", borderRadius:10, fontSize:10, fontWeight:800 }}>
+              {user?.role?.toUpperCase()}
+            </span>
+          </div>
+
+          {/* Mobile hamburger */}
+          <button onClick={() => setMobileMenu(s => !s)} className="mob-menu-btn"
+            style={{ background:"rgba(255,255,255,0.05)", border:`1px solid ${C.border}`,
+              borderRadius:8, padding:"5px 10px", cursor:"pointer", color:C.muted, fontSize:16, display:"none" }}>
+            {mobileMenu ? "✕" : "☰"}
+          </button>
+
+          <Btn onClick={handleLogout} variant="ghost" sm>Logout</Btn>
+        </div>
+      </nav>
+    );
+  };
+
 /* ═══════════════════════════════════════════════════════════════════
    MAIN APP
 ═══════════════════════════════════════════════════════════════════ */
@@ -275,124 +394,6 @@ export default function App() {
     (catFilter === "Semua" || i.cat === catFilter)
   );
 
-  /* ════════════════════════════════════════════════════════════════
-     COMPONENTS
-  ════════════════════════════════════════════════════════════════ */
-
-  /* ─── TOAST ─────────────────────────────────────────────────── */
-  const Toast = () => !toast ? null : (
-    <div style={{ position:"fixed", bottom:24, right:24, zIndex:9999,
-      background: toast.type==="error" ? C.red : toast.type==="success" ? C.greenDark : C.blue,
-      color:"#fff", padding:"12px 20px", borderRadius:12, maxWidth:320,
-      boxShadow:"0 8px 32px rgba(0,0,0,0.6)", fontWeight:600, fontSize:14,
-      animation:"toastIn 0.3s ease" }}>
-      {toast.msg}
-    </div>
-  );
-
-  /* ─── NAVBAR ─────────────────────────────────────────────────── */
-  const NavBar = () => {
-    const adminNav = [
-      { k:"admin_dashboard",      label:"Dashboard" },
-      { k:"admin_items",          label:"Barang" },
-      { k:"admin_verifications",  label: pending.length > 0 ? `Verifikasi (${pending.length})` : "Verifikasi" },
-      { k:"admin_history",        label:"Histori" },
-    ];
-    const custNav = [
-      { k:"customer_catalog",   label:"Katalog" },
-      { k:"customer_bookings",  label:"Booking Saya" },
-      { k:"customer_profile",   label:"Profil" },
-    ];
-    const navItems = user?.role === "admin" ? adminNav : custNav;
-
-    const NavLink = ({ k, label }) => (
-      <button onClick={() => navigate(k)} style={{
-        background: page===k ? C.accentDim : "transparent",
-        color: page===k ? C.accent : C.muted,
-        border:"none", borderRadius:8, padding:"6px 13px",
-        cursor:"pointer", fontWeight:700, fontSize:13, fontFamily:"inherit",
-        transition:"all 0.15s", whiteSpace:"nowrap",
-        borderBottom: page===k ? `2px solid ${C.accent}` : "2px solid transparent",
-      }}>{label}</button>
-    );
-
-    return (
-      <nav style={{ position:"sticky", top:0, zIndex:200, background:"rgba(7,14,8,0.97)",
-        backdropFilter:"blur(12px)", borderBottom:`1px solid ${C.border}`,
-        padding:"0 20px", display:"flex", alignItems:"center",
-        justifyContent:"space-between", height:58 }}>
-        {/* Logo */}
-        <div style={{ display:"flex", alignItems:"center", gap:20 }}>
-          <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontWeight:900, fontSize:22,
-            color:C.accent, letterSpacing:1, whiteSpace:"nowrap", display:"flex", alignItems:"center", gap:6 }}>
-            <span style={{ fontSize:18 }}>⛰</span> BASECAMP
-          </div>
-          {/* Desktop nav */}
-          <div style={{ display:"flex", gap:2, "@media(max-width:640px)":{display:"none"} }} className="desk-nav">
-            {navItems.map(n => <NavLink key={n.k} {...n} />)}
-          </div>
-        </div>
-
-        {/* Right side */}
-        <div style={{ display:"flex", alignItems:"center", gap:10 }}>
-          {/* Notif bell */}
-          <div style={{ position:"relative" }}>
-            <button onClick={() => setShowNotif(s => !s)} style={{
-              background:"transparent", border:"none", cursor:"pointer",
-              fontSize:18, position:"relative", padding:"4px 6px", color:C.muted }}>
-              🔔
-              {unread > 0 && <span style={{ position:"absolute", top:-1, right:-1,
-                background:C.red, color:"#fff", borderRadius:"50%",
-                width:15, height:15, fontSize:9, fontWeight:800,
-                display:"flex", alignItems:"center", justifyContent:"center" }}>{unread}</span>}
-            </button>
-            {showNotif && (
-              <div style={{ position:"absolute", right:0, top:42, background:C.bg2,
-                border:`1px solid ${C.border}`, borderRadius:14, width:290,
-                boxShadow:"0 20px 60px rgba(0,0,0,0.7)", zIndex:300, overflow:"hidden" }}>
-                <div style={{ padding:"12px 16px", fontWeight:700, fontSize:13,
-                  borderBottom:`1px solid ${C.border}`, color:C.white }}>
-                  🔔 Notifikasi
-                </div>
-                {notifs.slice(0,6).map(n => (
-                  <div key={n.id} onClick={() => {
-                    setNotifs(prev => prev.map(x => x.id===n.id ? {...x, read:true} : x));
-                    setShowNotif(false);
-                  }} style={{ padding:"10px 16px", cursor:"pointer",
-                    background: n.read ? "transparent" : "rgba(240,160,48,0.07)",
-                    fontSize:13, color: n.read ? C.muted : C.text,
-                    borderBottom:`1px solid ${C.border}40`, transition:"background 0.15s" }}>
-                    <span style={{ marginRight:6 }}>
-                      {n.type==="danger"?"🔴":n.type==="success"?"🟢":n.type==="warn"?"🟡":"🔵"}
-                    </span>{n.text}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* User info */}
-          <div style={{ fontSize:12, color:C.muted, display:"flex", alignItems:"center", gap:6 }}>
-            <span style={{ color:C.text, fontWeight:700, display:"none" }} className="user-name">{user?.name}</span>
-            <span style={{ background: user?.role==="admin" ? C.accentDim : "rgba(59,158,221,0.15)",
-              color: user?.role==="admin" ? C.accent : C.blue,
-              padding:"2px 8px", borderRadius:10, fontSize:10, fontWeight:800 }}>
-              {user?.role?.toUpperCase()}
-            </span>
-          </div>
-
-          {/* Mobile hamburger */}
-          <button onClick={() => setMobileMenu(s => !s)} className="mob-menu-btn"
-            style={{ background:"rgba(255,255,255,0.05)", border:`1px solid ${C.border}`,
-              borderRadius:8, padding:"5px 10px", cursor:"pointer", color:C.muted, fontSize:16, display:"none" }}>
-            {mobileMenu ? "✕" : "☰"}
-          </button>
-
-          <Btn onClick={handleLogout} variant="ghost" sm>Logout</Btn>
-        </div>
-      </nav>
-    );
-  };
 
   /* ─── MOBILE DRAWER ──────────────────────────────────────────── */
   const MobileDrawer = () => !mobileMenu ? null : (
