@@ -3,6 +3,8 @@ import {
   AreaChart, Area, BarChart, Bar,
   XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid
 } from "recharts";
+import React from 'react';
+import { FaTents } from "react-icons/fa6";
 
 /* ═══════════════════════════════════════════════════════════════════
    THEME & CONSTANTS
@@ -49,16 +51,16 @@ const CATS = ["Semua", "Tenda", "Tas", "Tidur", "Masak", "Aksesoris"];
 const FLOW_STEPS = ["pending_verification", "verified", "ready_pickup", "rented", "completed"];
 
 const INIT_ITEMS = [
-  { id:1,  name:"Tenda Dome 4 Person",     cat:"Tenda",     price:75000,  stock:3,  avail:3, emoji:"⛺", status:"tersedia",    desc:"Tenda kapasitas 4 orang, waterproof, ringan dan mudah dipasang. Cocok untuk camping keluarga." },
-  { id:2,  name:"Carrier 60L Deuter",      cat:"Tas",       price:50000,  stock:5,  avail:4, emoji:"🎒", status:"tersedia",    desc:"Carrier hiking 60 liter, sistem ergonomis, frame aluminium, cocok trekking 3–5 hari." },
-  { id:3,  name:"Sleeping Bag Polar -5°C", cat:"Tidur",     price:35000,  stock:8,  avail:6, emoji:"🛌", status:"tersedia",    desc:"Sleeping bag tahan suhu -5°C, material polar fleece premium, ringan dan compressible." },
-  { id:4,  name:"Kompor Portable Primus",  cat:"Masak",     price:30000,  stock:4,  avail:4, emoji:"🔥", status:"tersedia",    desc:"Kompor gas portable 1 tungku, efisien dan aman digunakan di outdoor." },
-  { id:5,  name:"Headlamp LED 200lm",      cat:"Aksesoris", price:20000,  stock:10, avail:7, emoji:"🔦", status:"tersedia",    desc:"Headlamp 200 lumen, tahan air IPX4, baterai AAA, mode strobe dan dim." },
-  { id:6,  name:"Matras Gunung EVA",       cat:"Tidur",     price:15000,  stock:6,  avail:5, emoji:"🟩", status:"tersedia",    desc:"Matras gunung EVA foam 8mm, ringan, anti-slip, ukuran 180×54cm." },
-  { id:7,  name:"Trekking Pole Carbon",    cat:"Aksesoris", price:25000,  stock:6,  avail:2, emoji:"🦯", status:"tersedia",    desc:"Trekking pole carbon fiber, adjustable 90–135cm, grip antishock." },
-  { id:8,  name:"Rain Cover 50–60L",       cat:"Aksesoris", price:15000,  stock:5,  avail:5, emoji:"🌧️", status:"tersedia",    desc:"Rain cover waterproof untuk carrier 50–60L, elastis dan tahan hujan deras." },
-  { id:9,  name:"Tenda Dome 2 Person",     cat:"Tenda",     price:60000,  stock:2,  avail:0, emoji:"⛺", status:"dipinjam",    desc:"Tenda 2 orang ultralight 1.8kg, ideal untuk solo hiking atau pasangan." },
-  { id:10, name:"Nesting Cookset 3pcs",    cat:"Masak",     price:20000,  stock:3,  avail:1, emoji:"🍳", status:"tersedia",    desc:"Set masak camping 3 pcs, aluminium anodized, lengkap dengan pegangan lipat." },
+  { id:1,  name:"Tenda Dome 4 Person",     cat:"Tenda",     price:75000,  stock:3,  avail:3, icon:<FaTents />, status:"tersedia",    desc:"Tenda kapasitas 4 orang, waterproof, ringan dan mudah dipasang. Cocok untuk camping keluarga." },
+  { id:2,  name:"Carrier 60L Deuter",      cat:"Tas",       price:50000,  stock:5,  avail:4, icon:<FaBackpack />, status:"tersedia",    desc:"Carrier hiking 60 liter, sistem ergonomis, frame aluminium, cocok trekking 3–5 hari." },
+  { id:3,  name:"Sleeping Bag Polar -5°C", cat:"Tidur",     price:35000,  stock:8,  avail:6, icon:<FaBed />, status:"tersedia",    desc:"Sleeping bag tahan suhu -5°C, material polar fleece premium, ringan dan compressible." },
+  { id:4,  name:"Kompor Portable Primus",  cat:"Masak",     price:30000,  stock:4,  avail:4, icon:<FaFire />, status:"tersedia",    desc:"Kompor gas portable 1 tungku, efisien dan aman digunakan di outdoor." },
+  { id:5,  name:"Headlamp LED 200lm",      cat:"Aksesoris", price:20000,  stock:10, avail:7, icon:<FaLightbulb />, status:"tersedia",    desc:"Headlamp 200 lumen, tahan air IPX4, baterai AAA, mode strobe dan dim." },
+  { id:6,  name:"Matras Gunung EVA",       cat:"Tidur",     price:15000,  stock:6,  avail:5, icon:<FaCouch />, status:"tersedia",    desc:"Matras gunung EVA foam 8mm, ringan, anti-slip, ukuran 180×54cm." },
+  { id:7,  name:"Trekking Pole Carbon",    cat:"Aksesoris", price:25000,  stock:6,  avail:2, icon:<FaWalking />, status:"tersedia",    desc:"Trekking pole carbon fiber, adjustable 90–135cm, grip antishock." },
+  { id:8,  name:"Rain Cover 50–60L",       cat:"Aksesoris", price:15000,  stock:5,  avail:5, icon:<FaUmbrella />, status:"tersedia",    desc:"Rain cover waterproof untuk carrier 50–60L, elastis dan tahan hujan deras." },
+  { id:9,  name:"Tenda Dome 2 Person",     cat:"Tenda",     price:60000,  stock:2,  avail:0, icon:<FaTents />, status:"dipinjam",    desc:"Tenda 2 orang ultralight 1.8kg, ideal untuk solo hiking atau pasangan." },
+  { id:10, name:"Nesting Cookset 3pcs",    cat:"Masak",     price:20000,  stock:3,  avail:1, icon:<FaUtensils />, status:"tersedia",    desc:"Set masak camping 3 pcs, aluminium anodized, lengkap dengan pegangan lipat." },
 ];
 
 const INIT_BOOKINGS = [
