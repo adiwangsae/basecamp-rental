@@ -4,6 +4,15 @@ import {
   XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid
 } from "recharts";
 import { FaTents } from "react-icons/fa6";
+import { defineConfig } from 'vite'
+import react from '@vitejs/react-refresh' 
+
+export default defineConfig({
+  plugins: [react()],
+  build: {
+    chunkSizeWarningLimit: 1600, 
+  },
+})
 
 /* ═══════════════════════════════════════════════════════════════════
    THEME & CONSTANTS
